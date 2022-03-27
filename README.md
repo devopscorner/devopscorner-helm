@@ -10,7 +10,7 @@
 ![pull requests](https://img.shields.io/github/issues-pr/devopscorner/devopscorner-helm)
 ![forks](https://img.shields.io/github/forks/devopscorner/devopscorner-helm)
 ![stars](https://img.shields.io/github/stars/devopscorner/devopscorner-helm)
-[![License: CC BY-NC 4.0](https://img.shields.io/github/license/devopscorner/devopscorner-helm)](https://img.shields.io/github/license/devopscorner/devopscorner-helm)
+[![license](https://img.shields.io/github/license/devopscorner/devopscorner-helm)](https://img.shields.io/github/license/devopscorner/devopscorner-helm)
 
 Helm chart for devopscorner services (Semantic Version)
 
