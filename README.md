@@ -4,6 +4,8 @@
 ![tags](https://img.shields.io/github/v/tag/devopscorner/devopscorner-helm?sort=semver)
 ![download all](https://img.shields.io/github/downloads/devopscorner/devopscorner-helm/total.svg)
 ![download latest](https://img.shields.io/github/downloads/devopscorner/devopscorner-helm/1.0/total)
+![view](https://views.whatilearened.today/views/github/devopscorner/devopscorner-helm.svg)
+![clone](https://img.shields.io/badge/dynamic/json?color=success&label=clone&query=count&url=https://github.com/devopscorner/devopscorner-helm/blob/master/clone.json?raw=True&logo=github)
 ![issues](https://img.shields.io/github/issues/devopscorner/devopscorner-helm)
 ![pull requests](https://img.shields.io/github/issues-pr/devopscorner/devopscorner-helm)
 ![forks](https://img.shields.io/github/forks/devopscorner/devopscorner-helm)
