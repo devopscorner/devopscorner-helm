@@ -1,5 +1,14 @@
 # DevOpsCorner Helm Chart
 
+![all contributors](https://img.shields.io/github/contributors/devopscorner/devopscorner-helm)
+![tags](https://img.shields.io/github/v/tag/devopscorner/devopscorner-helm?sort=semver)
+[![download](https://img.shields.io/github/downloads/devopscorner/devopscorner-helm/total)]()
+![issues](https://img.shields.io/github/issues/devopscorner/devopscorner-helm)
+![pull requests](https://img.shields.io/github/issues-pr/devopscorner/devopscorner-helm)
+![forks](https://img.shields.io/github/forks/devopscorner/devopscorner-helm)
+![stars](https://img.shields.io/github/stars/devopscorner/devopscorner-helm)
+[![License: CC BY-NC 4.0](https://img.shields.io/github/license/devopscorner/devopscorner-helm)](https://img.shields.io/github/license/devopscorner/devopscorner-helm)
+
 Helm chart for devopscorner services (Semantic Version)
 
 ## Prerequirements
