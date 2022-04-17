@@ -38,6 +38,10 @@ spec:
           env:
             {{- toYaml .Values.application.env | nindent 12 }}
           {{- end }}
+          {{- if .Values.envFrom.enabled }}
+          envFrom:
+            {{- toYaml .Values.envFrom.envFrom | nindent 12 }}
+          {{- end }}
           {{- if .Values.container }}
           ports:
           {{- with .Values.container.ports }}
@@ -57,7 +61,7 @@ spec:
           {{- if or .Values.configMap.enabled .Values.secret.enabled }}
           volumeMounts:
             {{- if and .Values.configMap .Values.configMap.enabled }}
-            - name: {{ include "spinnaker-frontend.fullname" . }}
+            - name: {{ .Values.configMap.name }}
               mountPath: {{ .Values.configMap.mountPath }}
               readOnly: {{ .Values.configMap.readOnly }}
             {{- end }}
@@ -67,6 +71,11 @@ spec:
               subPath: {{ .Values.secret.subPath }}
               readOnly: {{ .Values.secret.readOnly }}
             {{- end }}
+          {{- end }}
+          {{- if and .Values.volumes .Values.volumes.enabled }}
+          volumeMounts:
+            - name: {{ .Values.volumes.name }}
+              mountPath: {{ .Values.volumes.mountPath }}
           {{- end }}
       {{- if .Values.nodeSelector.enabled -}}
       {{- with .Values.nodeSelector.select }}
@@ -85,9 +94,9 @@ spec:
       {{- if or .Values.configMap.enabled .Values.secret.enabled }}
       volumes:
       {{- if and .Values.configMap .Values.configMap.enabled }}
-        - name: {{ include "spinnaker-frontend.fullname" . }}
+        - name: {{ .Values.configMap.name }}
           configMap:
-            name: {{ include "spinnaker-frontend.fullname" . }}
+            name: {{ .Values.configMap.name }}
       {{- end }}
       {{- if and .Values.secret .Values.secret.enabled }}
         - name: {{ .Values.secret.name }}
