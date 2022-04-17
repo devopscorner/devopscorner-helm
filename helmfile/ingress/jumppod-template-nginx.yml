@@ -9,8 +9,14 @@ templates:
     version: "1.3.0"
 
 releases:
-  - name: jumppod
+  - name: jumppod-nginx
     chart: devopscorner-lab/api
     values:
-      - ./jumppod-values.yml
+      - ./jumppod-ingress-nginx.yml
+    <<: *default
+
+  - name: jumppod-config
+    chart: devopscorner-lab/configmap
+    values:
+      - ./values/configmap/jumppod-config.yml
     <<: *default

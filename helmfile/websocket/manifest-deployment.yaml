@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server-deployment
+  namespace: <YOUR_NAMESPACE>
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: server
+  template:
+    metadata:
+      labels:
+        component: server
+    spec:
+      containers:
+        - name: server
+          image: <YOUR_DOCKER_IMAGE>
+          ports:
+            - containerPort: 40510

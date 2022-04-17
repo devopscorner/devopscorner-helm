@@ -1,0 +1,16 @@
+configMap:
+  enabled: true
+  name: "jumppod-config"
+  mountPath: "/app/core/config"
+  filename: "jumppod-conf"
+  readOnly: true
+  data:
+    QUEUE_TYPE: kafka
+    KAFKA_SERVERS: tb-kafka:9092
+    ZOOKEEPER_URL: zookeeper:2181
+
+serviceAccount:
+  create: false
+  annotations: {}
+  name: ""
+  namespace: devops-tools
