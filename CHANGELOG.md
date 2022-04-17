@@ -1,4 +1,4 @@
-# DevOpsCorner Helm - v1.0
+# DevOpsCorner Helm
 
 Helm chart for devopscorner services (Semantic Version)
 
@@ -7,7 +7,26 @@ Helm chart for devopscorner services (Semantic Version)
 - [Helm](https://helm.sh/docs/intro/install/) CLI
 - [Helmfile](https://github.com/roboll/helmfile) CLI
 
-## Features
+
+## Version 1.1
+
+### Features
+
+- Added integration external ConfigMap (shared config) into environment container (pods)
+
+- Helmfile (PoC Deployment)
+  - Jumppods [Ingress-ALB](helmfile/ingress/jumppod-ingress-alb.yml)
+  - Jumppods [Ingress-Nginx](helmfile/ingress/jumppod-ingress-nginx.yml)
+  - [Ingress ALB](helmfile/ingress/ingress-alb.yml)
+  - [Ingress NGINX](helmfile/ingress/ingress-nginx.yml)
+
+- [Websocket](helmfile/websocket) (PoC Deployment)
+
+---
+
+## Version 1.0
+
+### Features
 
 - HelmChart Template
   - API
