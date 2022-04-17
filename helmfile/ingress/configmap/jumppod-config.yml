@@ -6,8 +6,11 @@ configMap:
   readOnly: true
   data:
     QUEUE_TYPE: kafka
-    KAFKA_SERVERS: tb-kafka:9092
-    ZOOKEEPER_URL: zookeeper:2181
+    REDIS_SERVICES: redis:6379
+    PSQL_SERVICES: postgresql:5432
+    MYSQL_SERVICES: mysql:3306
+    KAFKA_SERVICES: kafka:9092
+    ZOOKEEPER_SERVICES: zookeeper:2181
 
 serviceAccount:
   create: false
