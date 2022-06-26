@@ -8,6 +8,14 @@ Helm chart for devopscorner services (Semantic Version)
 - [Helmfile](https://github.com/roboll/helmfile) CLI
 
 
+## Version 1.2
+
+### Features
+
+- Added Jumppods (Jump Host Pods) for maintenance EKS inside pods (`curl`, `wget`, `telnet`, `ping`, etc), securing with basic-auth access inside ingress-nginx
+
+---
+
 ## Version 1.1
 
 ### Features
