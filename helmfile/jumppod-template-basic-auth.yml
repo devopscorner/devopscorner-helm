@@ -12,5 +12,5 @@ releases:
   - name: jumppod
     chart: devopscorner-lab/api
     values:
-      - ./jumppod-values-basic-auth.yml
+      - ./jumppod-values-v1.4.0.yml
     <<: *default
