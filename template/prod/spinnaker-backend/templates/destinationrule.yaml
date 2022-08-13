@@ -1,0 +1,25 @@
+{{- if .Values.destinationRule }}
+{{ range $i, $dr := .Values.destinationRule -}}
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: {{ $dr.drName | lower }}
+  namespace: ${ parameters.namespace }
+spec:
+  host: "{{ $dr.host | lower }}"
+  {{- if $dr.trafficPolicy }}
+  trafficPolicy:
+    {{- with $dr.trafficPolicy }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- end}}
+  {{- if $dr.subsets }}
+  subsets:
+    {{- with $dr.subsets }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- end}}
+{{ printf "\n" }}
+{{- end}}
+{{- end }}

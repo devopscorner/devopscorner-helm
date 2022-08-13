@@ -1,0 +1,34 @@
+{{- $namespace := .Release.Namespace | default "api" | lower  -}}
+{{- if .Values.vs }}
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: {{ .Values.vs.svcName | lower }}
+  namespace: ${ parameters.namespace }
+spec:
+  {{- if .Values.vs.gateways }}
+  gateways:
+    {{- range .Values.vs.gateways }}
+    - {{ . }}
+    {{- end }}
+  {{- end}}
+  hosts:
+    - {{ .Values.vs.svcName | lower }}.{{ .Release.Namespace }}.svc.cluster.local
+    {{- if .Values.vs.hosts }}
+    {{- range .Values.vs.hosts }}
+    - {{ . }}
+    {{- end }}
+    {{- end }}
+  {{- if .Values.vs.http }}
+  http:
+    {{- with .Values.vs.http }}
+    {{- toYaml . | nindent 3 }}
+    {{- end }}
+  {{- end}}
+  {{- if .Values.vs.tls }}
+  tls:
+    {{- with .Values.vs.tls }}
+    {{- toYaml . | nindent 3 }}
+    {{- end }}
+  {{- end}}
+{{- end}}
