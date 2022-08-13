@@ -30,8 +30,8 @@ image:
   tag: "latest"
 
 imagePullSecrets: []
-nameOverride: ""
-fullnameOverride: ""
+nameOverride: "jumppod"
+fullnameOverride: "jumppod"
 
 serviceAccount:
   create: true

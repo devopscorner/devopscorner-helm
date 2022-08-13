@@ -1,3 +1,29 @@
+## HelmChart version 1.3.0
+
+### Template (`jumppod-template.yml`)
+
+```yaml
+---
+repositories:
+  - name: devopscorner-lab
+    url: s3://devopscorner-helm-chart/lab
+
+templates:
+  default: &default
+    namespace: devops-tools
+    version: "1.3.0"
+
+releases:
+  - name: jumppod
+    chart: devopscorner-lab/api
+    values:
+      - ./jumppod-values-v1.3.0.yml
+    <<: *default
+```
+
+### Values (`jumppod-values-v1.3.0.yml`)
+
+```yaml
 replicaCount: 1
 
 secret:
@@ -21,7 +47,7 @@ configMap:
 
 image:
   repository: devopscorner/cicd
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
   tag: "alpine"
 
 imagePullSecrets: []
@@ -73,7 +99,7 @@ ingress:
     # message to display with an appropriate context why the authentication is required
     nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required - Jumppods'
   hosts:
-    - host: jumppods.awscb.id
+    - host: jumppod.devops-tools.svc.cluster.local
       http:
         paths:
           - path: /
@@ -106,7 +132,7 @@ autoscaling:
 nodeSelector:
   enabled: true
   select:
-    node: "devopscorner-tools"   # DEV/UAT Cluster
+    node: "devops-tools"
 
 tolerations: []
 
@@ -117,3 +143,4 @@ podAnnotations: {}
 podSecurityContext: {}
 
 securityContext: {}
+```
