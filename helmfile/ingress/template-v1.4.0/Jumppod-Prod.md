@@ -103,7 +103,7 @@ ingress:
       http:
         paths:
           - path: /
-            pathType: Prefix
+            pathType: Prefix   # Prefix -or - ImplementationSpecific
             backend:
               service:
                 name: jumppod-api

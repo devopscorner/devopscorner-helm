@@ -98,7 +98,7 @@ ingress:
       http:
         paths:
           - path: /
-            pathType: ImplementationSpecific
+            pathType: Prefix   # Prefix -or - ImplementationSpecific
             backend:
               service:
                 name: jumppod-alb

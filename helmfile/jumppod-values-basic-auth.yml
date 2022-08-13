@@ -77,9 +77,12 @@ ingress:
       http:
         paths:
           - path: /
+            pathType: Prefix   # Prefix -or - ImplementationSpecific
             backend:
-              serviceName: jumppod-api
-              servicePort: 80
+              service:
+                name: jumppod-api
+                port:
+                  number: 80
   tls: []
 
 application:
