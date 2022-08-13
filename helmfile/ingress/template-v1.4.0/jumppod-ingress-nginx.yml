@@ -106,9 +106,12 @@ ingress:
       http:
         paths:
           - path: /
+            pathType: ImplementationSpecific
             backend:
-              serviceName: jumppod-nginx
-              servicePort: 80
+              service:
+                name: jumppod-nginx
+                port:
+                  number: 80
   tls: []
 
 application:

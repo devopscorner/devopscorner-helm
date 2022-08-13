@@ -98,10 +98,12 @@ ingress:
       http:
         paths:
           - path: /
-            # pathType: ImplementationSpecific
+            pathType: ImplementationSpecific
             backend:
-              serviceName: jumppod-alb
-              servicePort: use-annotation
+              service:
+                name: jumppod-alb
+                port:
+                  number: use-annotation
   tls: []
 
 application:

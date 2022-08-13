@@ -1,44 +1,3 @@
-replicaCount: 1
-
-secret:
-  enabled: false
-  name: ""
-  mountPath: {}
-  subPath: {}
-  readOnly: true
-  data: {}
-
-configMap:
-  enabled: true
-  name: "jumppod"
-  mountPath: /app/core/config
-  readOnly: true
-  data:
-    .app.config.json : |-
-      {
-          "AppName": "Commons Service",
-          "GRPCTimeout": 10,
-          "CacheExpiry": 300,
-          "CacheCleanup": 600,
-          "DefaultPageLimit": 3,
-          "ClientTimeout": 10
-      }
-
-image:
-  repository: devopscorner/cicd:alpine
-  pullPolicy: IfNotPresent  # IfNotPresent -or- Always
-  tag: "latest"
-
-imagePullSecrets: []
-nameOverride: ""
-fullnameOverride: "jumppod-nginx"
-
-serviceAccount:
-  create: true
-  annotations: {}
-  name: jumppod
-  namespace: devops-tools
-
 service:
   enabled: true
   type: ClusterIP
@@ -60,12 +19,6 @@ containers:
     - name: ssh
       containerPort: 22
       protocol: TCP
-
-envFrom:
-  enabled: true
-  envFrom:
-    - configMapRef:
-        name: jumppod-config
 
 ingress:
   enabled: true
@@ -106,43 +59,10 @@ ingress:
       http:
         paths:
           - path: /
+            pathType: ImplementationSpecific
             backend:
-              serviceName: jumppod-nginx
-              servicePort: 80
+              service:
+                name: jumppod-nginx
+                port:
+                  number: 80
   tls: []
-
-application:
-  enabled: true
-  env:
-    - name: HELM_TEMPLATE_NAME
-      value: api
-
-resources:
-  limits:
-    cpu: 200m
-    memory: 200Mi
-  requests:
-    cpu: 140m
-    memory: 170Mi
-
-autoscaling:
-  enabled: true
-  minReplicas: 1
-  maxReplicas: 5
-  targetCPUUtilizationPercentage: 80
-  targetMemoryUtilizationPercentage: 80
-
-nodeSelector:
-  enabled: true
-  select:
-    node: "devops-tools"   # DEV/UAT Cluster
-
-tolerations: []
-
-affinity: {}
-
-podAnnotations: {}
-
-podSecurityContext: {}
-
-securityContext: {}

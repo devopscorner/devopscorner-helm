@@ -26,7 +26,7 @@ configMap:
 
 image:
   repository: devopscorner/cicd:alpine
-  pullPolicy: Always
+  pullPolicy: IfNotPresent  # IfNotPresent -or- Always
   tag: "latest"
 
 imagePullSecrets: []

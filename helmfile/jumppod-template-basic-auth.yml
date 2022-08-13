@@ -6,7 +6,7 @@ repositories:
 templates:
   default: &default
     namespace: devops-tools
-    version: "1.2.0-rc"
+    version: "1.4.0-rc"
 
 releases:
   - name: jumppod
