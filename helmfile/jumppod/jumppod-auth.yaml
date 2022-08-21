@@ -3,6 +3,6 @@ data:
   auth: anVtcHBvZHMtYWRtaW46JDJ5JDEwJHBmaW1MUmtlSkwvMVJjVzZLb2UwdXVqb0IweFpoNGhRVlUzdURDUmRrcXFRaDFqbEFBUWFHCg==
 kind: Secret
 metadata:
-  name: jumppods-auth
+  name: jumppod-auth
   namespace: jumppods
 type: Opaque

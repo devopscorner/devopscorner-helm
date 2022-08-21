@@ -2,6 +2,11 @@ replicaCount: 1
 
 secret:
   enabled: false
+  name: ""
+  mountPath: {}
+  subPath: {}
+  readOnly: true
+  data: {}
 
 configMap:
   enabled: true
@@ -20,9 +25,9 @@ configMap:
       }
 
 image:
-  repository: devopscorner/cicd
-  pullPolicy: IfNotPresent  # IfNotPresent -or- Always
-  tag: "alpine"
+  repository: devopscorner/cicd:alpine
+  pullPolicy: Always  # IfNotPresent -or- Always
+  tag: "latest"
 
 imagePullSecrets: []
 nameOverride: "jumppod"
@@ -35,6 +40,7 @@ serviceAccount:
   namespace: devops-tools
 
 service:
+  enabled: true
   type: ClusterIP
   ports:
     - name: http
@@ -56,30 +62,7 @@ containers:
       protocol: TCP
 
 ingress:
-  enabled: true
-  annotations:
-    nginx.ingress.kubernetes.io/cors-allow-headers: '*'
-    nginx.ingress.kubernetes.io/cors-allow-methods: '*'
-    nginx.ingress.kubernetes.io/cors-allow-origin: '*'
-    nginx.ingress.kubernetes.io/enable-cors: "true"
-    nginx.ingress.kubernetes.io/affinity: cookie
-    nginx.ingress.kubernetes.io/from-to-www-redirect: "true"
-    kubernetes.io/ingress.class: nginx
-    ingress.kubernetes.io/whitelist-source-range: 10.0.0.0/32
-    # type of authentication
-    nginx.ingress.kubernetes.io/auth-type: basic
-    # name of the secret that contains the user/password definitions
-    nginx.ingress.kubernetes.io/auth-secret: jumppods-auth
-    # message to display with an appropriate context why the authentication is required
-    nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required - Jumppods'
-  hosts:
-    - host: jumppods.awscb.id
-      http:
-        paths:
-          - path: /
-            backend:
-              serviceName: jumppod-api
-              servicePort: 80
+  enabled: false
   tls: []
 
 application:

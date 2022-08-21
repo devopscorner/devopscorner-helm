@@ -4,7 +4,7 @@ References:
 - https://www.askapache.com/online-tools/htpasswd-generator/
 =============================
 
-htpasswd -c auth jumppods-admin > jumppods-auth/auth
+htpasswd -c auth jumppods-admin > jumppod-auth/auth
 ---
 jumppods-admin
 6T2pull8UB6aKKvC
@@ -26,10 +26,10 @@ jumppods-admin:Authentication Required - Jumppods:1f5700303099e203d3c927e7bfc29b
 =============================
 Kubernetes Secret
 =============================
-kubectl create secret generic jumppods-auth \
-  --from-file=jumppods-auth/auth -n jumppods
+kubectl create secret generic jumppod-auth \
+  --from-file=jumppod-auth/auth -n jumppods
 
-kubectl get secret jumppods-auth -o yaml -n jumppods
+kubectl get secret jumppod-auth -o yaml -n jumppods
 
 ---
 apiVersion: v1
@@ -37,6 +37,6 @@ data:
   auth: anVtcHBvZHMtYWRtaW46JDJ5JDEwJHBmaW1MUmtlSkwvMVJjVzZLb2UwdXVqb0IweFpoNGhRVlUzdURDUmRrcXFRaDFqbEFBUWFHCg==
 kind: Secret
 metadata:
-  name: jumppods-auth
+  name: jumppod-auth
   namespace: jumppods
 type: Opaque

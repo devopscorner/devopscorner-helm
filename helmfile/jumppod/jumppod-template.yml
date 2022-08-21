@@ -1,7 +1,7 @@
 ---
 repositories:
-  - name: devopscorner-lab
-    url: s3://devopscorner-helm-chart/lab
+  - name: devopscorner-staging
+    url: s3://devopscorner-helm-chart/staging
 
 templates:
   default: &default
@@ -10,7 +10,7 @@ templates:
 
 releases:
   - name: jumppod
-    chart: devopscorner-lab/api
+    chart: devopscorner-staging/api
     values:
       - ./jumppod-values.yml
     <<: *default
