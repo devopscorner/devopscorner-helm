@@ -1,0 +1,58 @@
+service:
+  enabled: true
+  type: NodePort
+  # (range: 30000-32767)
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 80
+      nodePort: 31080
+    - name: rpc
+      port: 9001
+      protocol: TCP
+      targetPort: 9001
+      nodePort: 31090
+
+container:
+  ports:
+    - name: http
+      containerPort: 80
+      protocol: TCP
+    - name: rpc
+      containerPort: 9001
+      protocol: TCP
+
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/actions.ssl-redirect: '{"Type": "redirect", "RedirectConfig": { "Protocol": "HTTPS", "Port": "443", "StatusCode": "HTTP_301"}}'
+    alb.ingress.kubernetes.io/actions.jumppod-alb: >
+      {"Type":"forward","TargetGroups":[{"ServiceName":"jumppod-alb","ServicePort":"31080","weight":100}],"TargetGroupArn": "arn:aws:elasticloadbalancing:ap-southeast-1:YOUR_AWS_ACCOUNT:targetgroup/TARGET_GROUP_NAME/TARGET_GROUP_ID"}
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-southeast-1:YOUR_AWS_ACCOUNT:certificate/HASH_ID
+    alb.ingress.kubernetes.io/group.name: devopscorner-tf-alb-eks-staging-dev.jumppods
+    alb.ingress.kubernetes.io/healthcheck-port: traffic-port
+    alb.ingress.kubernetes.io/healthcheck-protocol: HTTPS
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}, {"HTTP": 3000}, {"HTTP": 5000}, {"HTTP": 80}]'
+    alb.ingress.kubernetes.io/load-balancer-name: devopscorner-tf-alb-eks-staging-dev
+    alb.ingress.kubernetes.io/load-balancer-attributes: deletion_protection.enabled=true
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/security-groups: sg-0949c28a8fbea6933,sg-05ea550a9bc51f2f6
+    alb.ingress.kubernetes.io/ssl-policy: ELBSecurityPolicy-TLS-1-1-2017-01
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
+    # PUBLIC SUBNET
+    alb.ingress.kubernetes.io/subnets: subnet-1234567890,subnet-0987654321
+    alb.ingress.kubernetes.io/target-node-labels: eks.amazonaws.com/nodegroup=devops-tools_node,node=devops-tools
+    alb.ingress.kubernetes.io/target-type: instance
+    alb.ingress.kubernetes.io/tags: Environment=DEV,Service=ALB,Department=DEVOPS,DepartmentGroup=DEV-DEVOPS,Type=PRODUCTS,ProductName=DEVOPSCORNER,ProductGroup=DEV-DEVOPSCORNER,ResourceGroup=DEV-ALB-DEVOPSCORNER,Name=devopscorner-tf-alb-eks-staging-dev
+  hosts:
+    - host: jumppod-alb.awscb.id
+      http:
+        paths:
+          - path: /
+            # pathType: Prefix   # Prefix -or - ImplementationSpecific
+            backend:
+              serviceName: jumppod-alb
+              servicePort: use-annotation
+  tls: []

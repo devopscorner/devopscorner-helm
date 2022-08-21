@@ -1,27 +1,27 @@
-## HelmChart version 1.3.0
+## HelmChart version 1.2.0
 
 ### Template (`jumppod-template.yml`)
 
 ```yaml
 ---
 repositories:
-  - name: devopscorner-staging
-    url: s3://devopscorner-helm-chart/staging
+  - name: devopscorner-lab
+    url: s3://devopscorner-helm-chart/lab
 
 templates:
   default: &default
     namespace: devops-tools
-    version: "1.3.0"
+    version: "1.2.0"
 
 releases:
   - name: jumppod
-    chart: devopscorner-staging/api
+    chart: devopscorner-lab/api
     values:
-      - ./jumppod-values-v1.3.0.yml
+      - ./jumppod-values-v1.2.0.yml
     <<: *default
 ```
 
-### Values (`jumppod-values-v1.3.0.yml`)
+### Values (`jumppod-values-v1.2.0.yml`)
 
 ```yaml
 replicaCount: 1

@@ -1,0 +1,22 @@
+---
+repositories:
+  - name: devopscorner-lab
+    url: s3://devopscorner-helm-chart/lab
+
+templates:
+  default: &default
+    namespace: devops-tools
+    version: "1.2.0"
+
+releases:
+  - name: jumppod-alb
+    chart: devopscorner-lab/api
+    values:
+      - ./jumppod-ingress-alb.yml
+    <<: *default
+
+  - name: jumppod-config
+    chart: devopscorner-lab/configmap
+    values:
+      - ./values/configmap/jumppod-config.yml
+    <<: *default
