@@ -14,6 +14,8 @@
 
 Helm chart for devopscorner services (Semantic Version)
 
+---
+
 ## Prerequirements
 
 - Helm
