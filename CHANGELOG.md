@@ -47,6 +47,7 @@ Helm chart for devopscorner services (Semantic Version)
                 port:
                   number: 80
   ```
+- Added cronjob for jumppods
 
 ## Version 1.3
 
