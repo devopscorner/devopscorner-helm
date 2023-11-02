@@ -10,7 +10,7 @@ secret:
 
 configMap:
   enabled: true
-  name: "jumppod-api"
+  name: "jumppod"
   mountPath: /app/core/config
   readOnly: true
   data:
@@ -25,9 +25,9 @@ configMap:
       }
 
 image:
-  repository: devopscorner/cicd:alpine
+  repository: devopscorner/cicd
   pullPolicy: Always  # IfNotPresent -or- Always
-  tag: "latest"
+  tag: "alpine"
 
 imagePullSecrets: []
 nameOverride: "jumppod"

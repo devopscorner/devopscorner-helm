@@ -2,10 +2,15 @@ replicaCount: 1
 
 secret:
   enabled: false
+  name: ""
+  mountPath: {}
+  subPath: {}
+  readOnly: true
+  data: {}
 
 configMap:
   enabled: true
-  name: "jumppod-api"
+  name: "jumppod"
   mountPath: /app/core/config
   readOnly: true
   data:
@@ -35,6 +40,7 @@ serviceAccount:
   namespace: devops-tools
 
 service:
+  enabled: true
   type: ClusterIP
   ports:
     - name: http
