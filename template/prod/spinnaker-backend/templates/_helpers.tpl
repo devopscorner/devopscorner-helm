@@ -24,16 +24,16 @@ If release name contains chart name it will be used as a full name.
 {{- end }}
 
 {{/*
-Create chart name and version as used by the chart prodel.
+Create chart name and version as used by the chart label.
 */}}
 {{- define "spinnaker-backend.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
-Common prodels
+Common labels
 */}}
-{{- define "spinnaker-backend.prodels" -}}
+{{- define "spinnaker-backend.labels" -}}
 helm.sh/chart: {{ include "spinnaker-backend.chart" . }}
 {{ include "spinnaker-backend.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
@@ -43,7 +43,7 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
 {{/*
-Selector prodels
+Selector labels
 */}}
 {{- define "spinnaker-backend.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "spinnaker-backend.name" . }}

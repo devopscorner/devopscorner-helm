@@ -1,0 +1,200 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: oncall-environment
+data:
+  BASE_URL: $DOMAIN
+  SECRET_KEY: $SECRET_KEY
+  RABBITMQ_USERNAME: "rabbitmq"
+  RABBITMQ_PASSWORD: $RABBITMQ_PASSWORD
+  RABBITMQ_HOST: "rabbitmq"
+  RABBITMQ_PORT: "5672"
+  RABBITMQ_DEFAULT_VHOST: "/"
+  MYSQL_PASSWORD: $MYSQL_PASSWORD
+  MYSQL_DB_NAME: oncall_hobby
+  MYSQL_USER: ${MYSQL_USER:-root}
+  MYSQL_HOST: ${MYSQL_HOST:-mysql}
+  MYSQL_PORT: "3306"
+  REDIS_URI: "redis://redis:6379/0"
+  DJANGO_SETTINGS_MODULE: "settings.hobby"
+  CELERY_WORKER_QUEUE: "default,critical,long,slack,telegram,webhook,retry,celery"
+  CELERY_WORKER_CONCURRENCY: "1"
+  CELERY_WORKER_MAX_TASKS_PER_CHILD: "100"
+  CELERY_WORKER_SHUTDOWN_INTERVAL: "65m"
+  CELERY_WORKER_BEAT_ENABLED: "True"
+  GRAFANA_API_URL: "http://grafana:3000"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: engine
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: engine
+  template:
+    metadata:
+      labels:
+        app: engine
+    spec:
+      containers:
+        - name: engine
+          image: grafana/oncall
+          ports:
+            - containerPort: 8080
+          command:
+            - sh
+            - -c
+            - "uwsgi --ini uwsgi.ini"
+          envFrom:
+            - configMapRef:
+                name: oncall-environment
+          readinessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - nc -z -w 1 mysql 3306 && nc -z -w 1 rabbitmq 5672
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - uwsgi --reload /tmp/uwsgi.pid
+            initialDelaySeconds: 5
+            periodSeconds: 10
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: engine
+spec:
+  selector:
+    app: engine
+  ports:
+    - port: 8080
+      targetPort: 8080
+  type: LoadBalancer
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: celery
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: celery
+  template:
+    metadata:
+      labels:
+        app: celery
+    spec:
+      containers:
+        - name: celery
+          image: grafana/oncall
+          command:
+            - sh
+            - -c
+            - "./celery_with_exporter.sh"
+          envFrom:
+            - configMapRef:
+                name: oncall-environment
+          readinessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - nc -z -w 1 mysql 3306 && nc -z -w 1 rabbitmq 5672
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - uwsgi --reload /tmp/uwsgi.pid
+            initialDelaySeconds: 5
+            periodSeconds: 10
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oncall-db-migration
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: oncall-db-migration
+  template:
+    metadata:
+      labels:
+        app: oncall-db-migration
+    spec:
+      containers:
+        - name: oncall-db-migration
+          image: grafana/oncall
+          command:
+            - python
+            - manage.py
+            - migrate
+            - --noinput
+          envFrom:
+            - configMapRef:
+                name: oncall-environment
+          readinessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - nc -z -w 1 mysql 3306 && nc -z -w 1 rabbitmq 5672
+            initialDelaySeconds: 5
+            periodSeconds: 10
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - name: mysql
+          image: mysql:8.0.32
+          command:
+            - "--default-authentication-plugin=mysql_native_password"
+            - "--character-set-server=utf8mb4"
+            - "--collation-server=utf8mb4_unicode_ci"
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: $MYSQL_PASSWORD
+            - name: MYSQL_DATABASE
+              value: oncall_hobby
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+            - name: dbdata
+              mountPath: /var/lib/mysql
+          readinessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - mysql -uroot -p$MYSQL_PASSWORD oncall_hobby -e 'select 1'
+            initialDelaySeconds: 30
+            periodSeconds: 10

@@ -5,7 +5,7 @@ set -e
 TITLE="HELM PACKAGE SCRIPT"          # script name
 VER="2.2"                            # script version
 
-HELM_VERSION="1.4.0-rc"
+HELM_VERSION="1.5.0-rc"
 HELM_TEMPLATE="api \
   backend \
   configmap \
