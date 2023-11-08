@@ -7,6 +7,51 @@ Helm chart for devopscorner services (Semantic Version)
 - [Helm](https://helm.sh/docs/intro/install/) CLI
 - [Helmfile](https://github.com/roboll/helmfile) CLI
 
+## Version 1.5
+
+### Features
+
+- Migrate for HPA (horizontal pods autoscaller)
+  ```
+  ----------
+  before
+  ----------
+  metrics:
+    {{- if .Values.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: {{ .Values.autoscaling.targetCPUUtilizationPercentage }}
+    {{- end }}
+    {{- if .Values.autoscaling.targetMemoryUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        targetAverageUtilization: {{ .Values.autoscaling.targetMemoryUtilizationPercentage }}
+    {{- end }}
+
+  ----------
+  after
+  ----------
+  metrics:
+    {{- if .Values.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type:
+            averageUtilization: {{ .Values.autoscaling.targetCPUUtilizationPercentage }}
+    {{- end }}
+    {{- if .Values.autoscaling.targetMemoryUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type:
+            averageUtilization: {{ .Values.autoscaling.targetMemoryUtilizationPercentage }}
+    {{- end }}
+    ```
+
 
 ## Version 1.4
 
