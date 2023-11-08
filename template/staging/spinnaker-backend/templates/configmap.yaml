@@ -4,8 +4,8 @@ kind: ConfigMap
 metadata:
   name: {{ include "spinnaker-backend.fullname" . }}
   namespace: ${ parameters.namespace }
-  stagingels:
-    {{- include "spinnaker-backend.stagingels" . | nindent 4 }}
+  labels:
+    {{- include "spinnaker-backend.labels" . | nindent 4 }}
 {{- with .Values.configMap.data }}
 data:
   {{- toYaml . | nindent 2 }}

@@ -3,8 +3,8 @@ kind: Deployment
 metadata:
   name: {{ include "spinnaker-frontend.fullname" . }}
   namespace: ${ parameters.namespace }
-  stagingels:
-    {{- include "spinnaker-frontend.stagingels" . | nindent 4 }}
+  labels:
+    {{- include "spinnaker-frontend.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
@@ -18,7 +18,7 @@ spec:
       annotations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      stagingels:
+      labels:
         {{- include "spinnaker-frontend.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}

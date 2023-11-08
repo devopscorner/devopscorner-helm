@@ -24,16 +24,16 @@ If release name contains chart name it will be used as a full name.
 {{- end }}
 
 {{/*
-Create chart name and version as used by the chart prodel.
+Create chart name and version as used by the chart label.
 */}}
 {{- define "secretref.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
-Common prodels
+Common labels
 */}}
-{{- define "secretref.prodels" -}}
+{{- define "secretref.labels" -}}
 helm.sh/chart: {{ include "secretref.chart" . }}
 {{ include "secretref.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
@@ -43,7 +43,7 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
 {{/*
-Selector prodels
+Selector labels
 */}}
 {{- define "secretref.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "secretref.name" . }}

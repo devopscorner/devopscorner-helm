@@ -3,7 +3,7 @@ def GITHUB_REPO = 'https://github.com/devopscorner/devopscorner-helm'
 node {
     parameters {
         string(name: 'HELM_ENV', defaultValue: 'lab', description: 'Enter Environment')
-        string(name: 'HELM_VERSION', defaultValue: '1.4.0-rc', description: 'Enter Version Number')
+        string(name: 'HELM_VERSION', defaultValue: '1.5.0-rc', description: 'Enter Version Number')
         string(name: 'HELM_REPO_PATH', defaultValue: 's3://devopscorner-helm-chart/lab', description: 'Enter Helm Repo S3 Path')
         string(name: 'HELM_REPO_NAME', defaultValue: 'devopscorner-lab', description: 'Enter Helm Repo Name')
     }
